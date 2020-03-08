@@ -16,6 +16,23 @@ jobs:
             node: 10
       max-parallel: 1
     runs-on: ${{ matrix.os }}
+    container:
+      image: node:12.14.1-stretch
+      env:
+        NODE_ENV: development
+      ports:
+        - 8080
+      options: --cpus 1
+    services:
+      postgres:
+        image: postgres:12.1
+        env:
+          POSTGRES_USER: pguser
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval
+        10s --health-timeout 5s --health-retries 5
     timeout-minutes: 30
     env:
       DEBUG: false
