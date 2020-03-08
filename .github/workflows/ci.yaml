@@ -38,3 +38,4 @@ jobs:
       - name: Sleep
         run: sleep 120
         timeout-minutes: 1
+        continue-on-error: true
