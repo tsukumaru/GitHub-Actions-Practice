@@ -13,7 +13,7 @@ jobs:
         node: [10, 12]
         exclude:
           - os: macos-latest
-            node: 10
+          - os: windows-latest
       max-parallel: 1
     runs-on: ${{ matrix.os }}
     services:
