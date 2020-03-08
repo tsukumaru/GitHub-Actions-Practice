@@ -7,17 +7,21 @@ env:
 jobs:
   unit-test:
     name: Unit Test
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [10, 12]
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     env:
       DEBUG: false
     steps:
       - name: Checkout
         uses: actions/checkout@v2.0.0
-      - name: Set Node.js 12.x
+      - name: Set Node.js ${{ matrix.node }}
         uses: actions/setup-node@v1.3.0
         with:
-          node-version: 12.x
+          node-version: ${{ matrix.node }}
       - name: Install dependencies
         run: npm ci
         env:
@@ -49,5 +53,6 @@ jobs:
   secret:
     name: Show Secret Token
     runs-on: macos-latest
+    needs: [unit-test, lint, sleep]
     steps:
       - run: echo "${{ secrets.SECRET_TOKEN }}"
